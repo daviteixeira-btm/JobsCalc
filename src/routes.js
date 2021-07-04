@@ -15,9 +15,33 @@ const Profile = {
     },
 
     controllers: {
-        index(){
+        index(req, res){
             return res.render(views + "profile", { profile: Profile.data })
         },
+
+        update(req, res){
+            // req.body para pegar os dados
+            const data = req.body
+            // definir quantas semanas tem num ano
+            const weekPerYear = 52
+            // remover as semanas de férias do ano, para pegar quantas semanas tem em 1 mês
+            const weeksPerMonth = (weekPerYear - data["vacation-per-year"]) / 12 
+            // total de horas trabalhadas por semana
+            const weekTotalHours = data["hours-per-day"] * data["days-per-week"]
+            // horas trabalhadas no mês
+            const monthlyTotalHours = weekTotalHours * weeksPerMonth
+
+            // qual será o valor da minha hora?
+            const valueHour = data["monthly-budget"] / monthlyTotalHours
+
+            Profile.data = {
+                ...Profile.data,
+                ...req.body,
+                "value-hour": valueHour
+            }
+
+            return res.redirect('/profile')
+        }
     }
 }
 
@@ -51,7 +75,7 @@ const Job = {
                     ...job,
                     remaining,
                     status,
-                    budget: profile["value-hour"] * job["total-hours"]
+                    budget: Profile.data["value-hour"] * job["total-hours"]
                 }
             })
             
@@ -65,7 +89,7 @@ const Job = {
         save(req, res) {
             const lastId = Job.data[Job.data.length - 1]?.id || 1;
 
-            jobs.push({
+            Job.data.push({
                 id: lastId + 1,
                 name: req.body.name,
                 "daily-hours": req.body["daily-hours"],
@@ -101,5 +125,6 @@ routes.get('/job', Job.controllers.create)
 routes.post('/job', Job.controllers.save)
 routes.get('/job/edit', (req, res) =>  res.render(views + "job-edit"))
 routes.get('/profile', Profile.controllers.index)
+routes.post('/profile', Profile.controllers.update)
 
 module.exports = routes;
