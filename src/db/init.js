@@ -5,20 +5,18 @@ const initDb = {
 
         const db = await Database();
 
-        await db.exec(`
-            CREATE TABLE profile (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT,
-                avatar TEXT,
-                monthly_budget INT,
-                days_per_week INT,
-                hours_per_day INT,
-                vacation_per_year INT,
-                value_hour INT
-            )
-        `);
+        await db.exec(`CREATE TABLE profile (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            avatar TEXT,
+            monthly_budget INT,
+            days_per_week INT,
+            hours_per_day INT,
+            vacation_per_year INT,
+            value_hour INT
+        )`);
 
-        await db.exec(`CREATE TABLE jobs(
+        await db.exec(`CREATE TABLE jobs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
             daily_hours INT,
@@ -69,7 +67,7 @@ const initDb = {
         );`);
 
         await db.close();
-    }
-}
+    },
+};
 
 initDb.init();
