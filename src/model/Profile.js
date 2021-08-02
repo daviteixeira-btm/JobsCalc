@@ -13,8 +13,8 @@ module.exports = {
             avatar: data.avatar,
             "monthly-budget": data.monthly_budget,
             "days-per-week": data.days_per_week,
-            "hours-per-year": data.hours_per_day,
-            "vocation-per-year": data.vocation_per_year,
+            "hours-per-day": data.hours_per_day,
+            "vacation-per-year": data.vacation_per_year,
             "value-hour": data.value_hour
         };
     },
@@ -28,7 +28,7 @@ module.exports = {
             monthly_budget = ${newData["monthly-budget"]},
             days_per_week = ${newData["days-per-week"]},
             hours_per_day = ${newData["hours-per-day"]},
-            vocation_per_year = ${newData["vocation-per-year"]},
+            vacation_per_year = ${newData["vacation-per-year"]},
             value_hour = ${newData["value-hour"]}
         `);
 
